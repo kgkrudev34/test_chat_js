@@ -1,0 +1,53 @@
+<html>
+	<title>Чат</title>
+	<head>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="styles.css">
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+	</head>	
+	<body>
+		<div id="console_block" class="container">
+			
+		</div>
+		
+		<div class="container col-10">
+			<div id="chat_body" class="row">
+				<div id="chat_block_dialogs" class="col-2">
+					<div v-for="dialog in dialogList" class="dialog_item  container">
+						<div class="dialog_item_name">{{ dialog.user_id }}</div>
+						<div class="dialog_item_message ">{{ dialog.last_message }}</div>
+					</div>
+				</div>
+
+				<div id="chat_block_message" class="col-10">
+					
+					<div id="message_block_header" class="container">
+						<h6>Иванов Иван</h6>
+					</div>
+
+					<div id="message_content" class="container">
+						<div v-for="message in messages" class="item_message_block row">
+							<div class="item_message_user">{{ message.sender }}:</div>						
+							<div class="item_message_text">{{ message.text }}</div>
+						</div>					
+					</div>
+
+					<div id="navigation" class="container">
+						<div class="row col-8 offset-2">
+							<input class="col-9" type="text" id="message_text" placeholder="Введите сообщение..."/>
+							<button id="send_button" class="btn btn-dark col-3">Отправить</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	
+	<script src="js/main.js"></script>
+	<script src="js/vm.js"></script>
+
+</html>

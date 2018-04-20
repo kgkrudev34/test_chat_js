@@ -1,0 +1,114 @@
+
+#console_block{
+	
+}
+
+#chat_body{
+	margin-top: 50px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+}
+
+
+#chat_block_dialogs{
+	padding: 0px;
+	border: 1px solid #E0E1DF;
+}
+
+#chat_block_message{
+	height: 400px;
+	position: relative;
+	border: 1px solid #E0E1DF;
+	border-left: none;
+	padding: 0px;
+}
+
+.dialog_item{
+	border-bottom: 1px solid #E0E1DF;
+	padding: 0px;
+	cursor: pointer;
+	background-color: #e6eceb;
+}
+
+.dialog_item_message{
+	padding-left: 20px;
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-bottom: 10px;
+}
+
+.dialog_item_name{
+	padding-left: 10px;
+	padding-top: 5px;
+	font-weight: bold;
+}
+
+#navigation{
+	position: absolute;
+	height: auto;
+	bottom: 10px;
+	border-top: 1px solid #E0E1DF;
+}
+
+#message_content{
+	height: 300px;
+	overflow-y:auto;
+}
+
+.item_message_block{
+    border-bottom: 1px solid #E0E1DF;
+}
+.item_message_block>*{
+	display: inline-block;
+	padding: 10px;
+}
+
+.item_message_user{
+	padding-left: 10px;
+	font-weight: bold;
+}
+
+.item_message_text{
+	padding-left: 10px;
+}
+
+#message_block_header{
+	padding: 10px;
+	text-align: center;
+	background-color: #f7f7fc;
+	border-bottom: 1px solid #E0E1DF;
+}
+
+::-webkit-scrollbar-button { 
+background-image:url(''); 
+background-repeat:no-repeat; 
+width:6px; 
+height:0px 
+} 
+
+::-webkit-scrollbar-track { 
+background-color:#F2EDED; 
+box-shadow:0px 0px 3px #e6eceb inset; 
+} 
+
+::-webkit-scrollbar-thumb { 
+-webkit-border-radius: 5px; 
+border-radius: 5px; 
+background-color:#C0B9B9; 
+box-shadow:0px 1px 1px #fff inset; 
+background-image:url('https://yraaa.ru/_pu/24/59610063.png'); 
+background-position:center; 
+background-repeat:no-repeat; 
+} 
+
+::-webkit-resizer{ 
+background-image:url(''); 
+background-repeat:no-repeat; 
+width:7px; 
+height:0px 
+} 
+
+::-webkit-scrollbar{ 
+width: 11px; 
+}
