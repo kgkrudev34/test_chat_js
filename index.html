@@ -6,6 +6,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 		<link rel="stylesheet" href="styles.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
 	</head>	
@@ -14,40 +16,85 @@
 			
 		</div>
 		
-		<div class="container col-10">
+		<div class="container col-9 main">
 			<div id="chat_body" class="row">
-				<div id="chat_block_dialogs" class="col-2">
-					<div v-for="dialog in dialogList" class="dialog_item  container">
-						<div class="dialog_item_name">{{ dialog.user_id }}</div>
-						<div class="dialog_item_message ">{{ dialog.last_message }}</div>
+				<div id="chat_block_dialogs" class="col-3">
+					<div id="search_consumer">
+					<div>Test chat</div>
+					<img v-on:click="addDialog" id="add_user" class="btn btn-success" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAE7SURBVGhD7ZgxSsRQGIQDWugBtNNKRAUL8QqLCIKd2IrIgsdQFrWx9QYeRw+yhd4g8Qs7W4gJvKy4DDIfDD/Je8ObSZWkCiGEhanreh2dNE1zMRfX52hDW/wh9AqB35g/4P4HY1tbvSHszix2N6xfa6s3BD1U5k5Yv9VWb1LEjRRxI0XcSBE3UsQNuyKcucqhu8zjIcJzyeyF9UdGp7dPejhrilYOxvZ74h2zDeSZon1FLAPfaGb3giITRSwDw5m8VpDrRRHLSJE/ZpEip/JaQa5nRSwDwyb6lN8C8tSMkSKWg28L4xUaDxG+O2YvrL8yOr19wnODjhRtOXBgXlGsSBE3UsSNFHEjRdxIETcIeqDMfYy11RuKtD8upgr9De63LPct9jeQeY/A98ynubh+YA7/ngghhH9IVX0BUokkoxXIYlIAAAAASUVORK5CYII=">
+						
+					</div>
+					<div v-for="dialog in dialogList" class="dialog_item container">
+						<div v-on:click="selectDialog(dialog.id)" v-bind:class="{ active: dialog.isActive }">
+							
+							<div class="dialog_item_name">{{ convertName(dialog.user_id) }}</div>
+							<div class="dialog_item_message ">{{ dialog.last_message }}</div>
+						</div>
 					</div>
 				</div>
 
-				<div id="chat_block_message" class="col-10">
-					
-					<div id="message_block_header" class="container">
-						<h6>Иванов Иван</h6>
+				<div id="chat_block" class="col-9">
+					<div id="new-dialogs-list">
+						<div v-if="addDialogPanel">
+							<div id="message_block_header" class="container">
+								<div v-on:click="back" class="back col-2 row align-items-center">
+									<div class="col-2" >
+										<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADySURBVGhD7dc7CsJQEIXhRLFyBxa2Fq5CEFxBulQhCels7bICwcZKrHRTNtZuQLDxcQIjBE1sPRPOB4Mh9xbzgxYGIs3KsuzZo1thlmVrzC3P81NRFBN770qI5feY53sQdLAzN74iLGRn5/yq30NTBOacJMnIrnH7FYEZ2zVuimChCBaKYKEIFopgoQgWimDRiYgKlt3UlvcZEcfxEH9H7x8RF1cRlSiK+rZ4PeSBuNSu+IGlZ5hrV2LmimGkGFaKYaUYVophpRhWimGlGFZtMWmaLuyKHy0xRzv2pSFmZUf+4Os0RcAWQUt8Duy1yP8FwQtbMmS+FAoZOwAAAABJRU5ErkJggg==">
+									</div>
+									<div class="col-10">Назад</div>
+								</div>
+								<div id="consumer_label" class="col-10">
+									<div>Добавление нового диалога</div>
+								</div>
+							</div>
+							<div v-for="user in consumers" class="container row new_consumer_item">
+								<h6 v-on:click="selectDialog(user.user)">{{ user.username }} (id {{ user.user }})</h6>
+							</div>
+						</div>
+
 					</div>
 
-					<div id="message_content" class="container">
-						<div v-for="message in messages" class="item_message_block row">
-							<div class="item_message_user">{{ message.sender }}:</div>						
-							<div class="item_message_text">{{ message.text }}</div>
-						</div>					
-					</div>
+					<div id="chat_block_message" v-if="consumer!=null">
+						<div id="message_block_header" class="container">
+								<div v-on:click="back" class="back col-2 row align-items-center">
+									<div class="col-2" >
+										<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADySURBVGhD7dc7CsJQEIXhRLFyBxa2Fq5CEFxBulQhCels7bICwcZKrHRTNtZuQLDxcQIjBE1sPRPOB4Mh9xbzgxYGIs3KsuzZo1thlmVrzC3P81NRFBN770qI5feY53sQdLAzN74iLGRn5/yq30NTBOacJMnIrnH7FYEZ2zVuimChCBaKYKEIFopgoQgWimDRiYgKlt3UlvcZEcfxEH9H7x8RF1cRlSiK+rZ4PeSBuNSu+IGlZ5hrV2LmimGkGFaKYaUYVophpRhWimGlGFZtMWmaLuyKHy0xRzv2pSFmZUf+4Os0RcAWQUt8Duy1yP8FwQtbMmS+FAoZOwAAAABJRU5ErkJggg==">
+									</div>
+									<div class="col-10">Назад</div>
+								</div>
+								<div class="col-10">
+									<div id="consumer_label" class="col-10">
+										<div>{{ consumer }}</div>
+									</div>
+								</div>
+						</div>
 
-					<div id="navigation" class="container">
-						<div class="row col-8 offset-2">
-							<input class="col-9" type="text" id="message_text" placeholder="Введите сообщение..."/>
-							<button id="send_button" class="btn btn-dark col-3">Отправить</button>
+						<div id="message_content" class="container" ref='messageDisplay'>
+							<div v-for="message in messages" class="item_message_block row">
+								<div class="item_message_user">{{ message.sender }}:</div>						
+								<div class="item_message_text">{{ message.text }}</div>
+							</div>					
+						</div>
+
+						<div id="navigation" class="container">
+							<div class="row col-8 offset-2">
+								<input v-on:keyup.enter="send_message(text_message)" v-model="text_message" class="col-9" type="text" id="message_text" placeholder="Введите сообщение..."/>
+								<button v-on:click="send_message(text_message)" id="send_button" class="btn btn-dark col-3">Отправить</button>
+							</div>
 						</div>
 					</div>
+
+
+
 				</div>
 			</div>
 		</div>
 	</body>
 	
-	<script src="js/main.js"></script>
-	<script src="js/vm.js"></script>
+	<script src="js/functions.js"></script>
+	<script src="js/example_data.js"></script>
+	<script src="js/vm_dialogs.js"></script>
+	<script src="js/vm_chat_block_message.js"></script>
+	<script src="js/vm_new_dialogs.js"></script>
 
 </html>
